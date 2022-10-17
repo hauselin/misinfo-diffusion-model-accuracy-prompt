@@ -1,6 +1,12 @@
 # Data repository for Lin, Pennycook, & Rand (2022)
 
-Thinking more or thinking differently? Using drift-diffusion modeling to illuminate why accuracy prompts decrease misinformation sharing (see manuscript [here](https://psyarxiv.com/kf8md/))
+Repository URL: https://github.com/hauselin/misinfo-diffusion-model-accuracy-prompt
+
+OSF data/code repository: https://doi.org/....
+
+If you're planning to run the analysis scripts in the Code directory, I strongly recommend you clone or download this ENTIRE repository.
+
+This repository contains stuff for the following paper: Thinking more or thinking differently? Using drift-diffusion modeling to illuminate why accuracy prompts decrease misinformation sharing (see manuscript [here](https://psyarxiv.com/kf8md/))
 
 Data directories
 - `data`: data
