@@ -1,0 +1,126 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r}
+rm(list = ls())
+library(data.table)
+library(tidyverse)
+library(brms)
+library(glue)
+source("utils.R")
+``` 
+
+
+```{r}
+dt0 <- fread("../data/data_prereg_analysis.csv")
+dt0
+
+dt0 <- dt0[condition %in% c(0, 1), ]
+dt1 <- dt0[, .(study, platform, id, condition, real, rating2, rt)]
+
+# mean rt and choice
+dt1[, .(rt = mean(rt, na.rm = T),
+        rt_sd = sd(rt, na.rm = T),
+        rating2 = mean(rating2, na.rm = T),
+        rating2_sd = sd(rating2, na.rm = T)), 
+    keyby = .(platform, study, condition, id)][,
+        .(rt = mean(rt, na.rm = T),
+          rt_sd = mean(rt_sd, na.rm = T),
+          rating2 = mean(rating2, na.rm = T),
+          rating2_sd = mean(rating2_sd, na.rm = T)), 
+        keyby = .(platform, study, condition)][,
+        .(rt = mean(rt, na.rm = T),
+          rt_sd = mean(rt_sd, na.rm = T),
+          rating2 = mean(rating2, na.rm = T),
+          rating2_sd = mean(rating2_sd, na.rm = T)), 
+        keyby = .(condition)] %>% round(2)
+```
+
+
+```{r}
+dt2 <- dt1[, .(share = mean(rating2, na.rm = T), rt = mean(rt, na.rm = T)), 
+    keyby = .(platform, study, condition, id, real)]
+
+dt3 <- dcast(dt2, platform + study + condition + id ~ real, value.var = "share")
+setnames(dt3, c("0", "1"), c("false", "true"))
+dt3
+dt3[, discern := true - false]
+
+# mean rt and choice
+dt3[, .(discern = mean(discern, na.rm = T),
+        discern_sd = sd(discern, na.rm = T)), 
+    keyby = .(platform, study, condition)][, 
+       .(discern = mean(discern, na.rm = T),
+        discern_sd = sd(discern, na.rm = T)), 
+    keyby = .(condition)] %>% round(2)
+
+```
+
+
+```{r recode}
+dt3[, Condition := ifelse(condition == 0, "Control", "Treatment")]
+setnames(dt3, "platform", "Platform")
+dt3[, platformEC := ifelse(Platform == "Lucid", 0, 1)]
+dt3[, platformZ := zscore(platformEC)]
+dt3[condition %in% c(0, 1), conditionEC := ifelse(condition == 0, -0.5, 0.5)]
+dt3[, .(Platform, condition, platformZ, conditionEC)] %>% distinct() %>% arrange(conditionEC)
+```
+
+
+
+```{r}
+nchains <- 4
+samples <- 5000
+ctrl <- list(adapt_delta = 0.99)
+
+(y_sd <- dt3[conditionEC == -0.5, sd(discern)] * 1 / 3) # control group outcome sd
+(priors <- c(set_prior(glue("normal(0, {y_sd})"), class = "b")))
+
+mm <- brm(discern ~ conditionEC * platformZ + (1 + conditionEC | study), data = dt3,
+          prior = priors,
+          cores = nchains,
+          chains = nchains,
+          sample_prior = TRUE,
+          save_pars = save_pars(all = TRUE),
+          iter = samples,
+          control = ctrl)
+mm
+```
+
+
+
+
+```{r recode}
+dt2[, Condition := ifelse(condition == 0, "Control", "Treatment")]
+setnames(dt2, "platform", "Platform")
+dt2[, platformEC := ifelse(Platform == "Lucid", 0, 1)]
+dt2[, platformZ := zscore(platformEC)]
+dt2[condition %in% c(0, 1), conditionEC := ifelse(condition == 0, -0.5, 0.5)]
+dt2[, .(Platform, Condition, platformZ, conditionEC)] %>% distinct() %>% arrange(conditionEC)
+```
+
+
+
+```{r}
+nchains <- 4
+samples <- 5000
+ctrl <- list(adapt_delta = 0.99)
+
+(y_sd <- dt2[conditionEC == -0.5, sd(rt)] * 1 / 3) # control group outcome sd
+(priors <- c(set_prior(glue("normal(0, {y_sd})"), class = "b")))
+
+mm <- brm(rt ~ conditionEC * platformZ + (1 + conditionEC | study), data = dt2,
+          prior = priors,
+          cores = nchains,
+          chains = nchains,
+          sample_prior = TRUE,
+          save_pars = save_pars(all = TRUE),
+          iter = samples,
+          control = ctrl)
+mm
+```
+
