@@ -1,6 +1,6 @@
 # Data repository for Lin, Pennycook, & Rand (2022)
 
-Thinking more or thinking differently? Using drift-diffusion modeling to illuminate why accuracy prompts decrease misinformation sharing
+Thinking more or thinking differently? Using drift-diffusion modeling to illuminate why accuracy prompts decrease misinformation sharing (see manuscript [here](https://psyarxiv.com/kf8md/))
 
 Data directories
 - `data`: data
