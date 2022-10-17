@@ -2,7 +2,7 @@
 
 Repository URL: https://github.com/hauselin/misinfo-diffusion-model-accuracy-prompt
 
-OSF data/code repository: https://doi.org/....
+OSF data/code repository: https://doi.org/10.17605/OSF.IO/3DUCN
 
 If you're planning to run the analysis scripts in the Code directory, I strongly recommend you clone or download this ENTIRE repository.
 
