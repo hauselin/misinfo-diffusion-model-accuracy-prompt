@@ -1,5 +1,5 @@
 # data
- 
+
 - `data_ddm_params.csv`: data with fitted DDM parameters for each subject
     - `id`: subject id
     - `condition`: only conditions 0 and 1 are included in the analysis
@@ -8,11 +8,33 @@
     - `B`: boundary parameter
     - `x0`: starting-point parameter
     - `nondectime`: non-decision time parameter
+    - `studyOrig`: study name
+    - `study`: study id
+    - `platform`: participant recruitment platform
+    - `crt_acc`: proportion correct cognition reflection test responses
+    - `demrep`: democrat or republican participant
+    - `conservative`: conservatism
+    - `trump2016`: voted for Trump in 2016 Election or not
+    - `white`: white or not participant
+    - `college`: have college degree or not
+    - `accimp`: belief in importance of only sharing stuff if they're accurate
+    - `rating2`: mean sharing intention (mean of binary [0, 1] responses)
+    - `rt`: mean response time
+    - `rt0`: mean response time for "not sharing" decisions
+    - `rt1`: mean response time for "share" decisions
+    - `*_pred` variables: DDM model-predicted values
 - `data_explore_before_prereg.csv`: data for exploration (before preregistration)
     - `id`: subject id
     - `condition`: only conditions 0 and 1 are included in the analysis
+    - `rating`: continuous choice (0 to 1)
     - `rating2`: binarized choice (0: don't share, 1: share)
     - `rt`: reaction time in seconds
-    - `perc_acc`: headline accuracy rating 
+    - `perc_acc`: headline accuracy rating from out-of-sample raters
+    - `perc_accDR`: headline accuracy rating from out of-sample raters, separately for Democrats and Republicans (and the mean of their ratings)
+    - `politically_concordant`: whether headline was politically concordant with participant's political lean
+    - `real`: whether headline true or false
+    - `item_num`: headline number
+    - `fold`: 0 (data for exploratory analysis), 1 (data for preregistered data analysis)
+    - for other variables, see other datasets' codebook
 - `data_prereg_analysis.csv`: data for preregistered analysis
     - same variables as above
