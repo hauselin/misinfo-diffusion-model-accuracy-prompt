@@ -6,7 +6,7 @@ OSF data/code repository: https://doi.org/10.17605/OSF.IO/3DUCN
 
 If you're planning to run the analysis scripts in the Code directory, I strongly recommend you clone or download this ENTIRE repository.
 
-This repository contains stuff for the following paper: Thinking more or thinking differently? Using drift-diffusion modeling to illuminate why accuracy prompts decrease misinformation sharing (see manuscript [here](https://psyarxiv.com/kf8md/))
+This repository contains stuff for the following paper: Thinking more or thinking differently? Using drift-diffusion modeling to illuminate why accuracy prompts decrease misinformation sharing (see manuscript [here](https://www.hauselin.com/public/papers/LinPennycookRand2023-thinking.pdf))
 
 Data directories
 - `data`: data
